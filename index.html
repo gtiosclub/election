@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Day Voting</title>
+    <style>
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, system-ui, Arial, sans-serif;
+            text-align: center;
+            margin: 0px;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0F0F0F;
+            overflow: none;
+        }
+        #loading {
+            font-size: 18px;
+            color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #loading img {
+            width: 100%;
+            height: auto;
+            margin-bottom: -4vh;
+        }
+        h2, p {
+            opacity: .8;
+        }
+
+        h1,h2{
+            margin: 0;
+        }
+
+        p {
+            margin-bottom:1em;
+            margin-top:1EM;
+        }
+
+        #form-container {
+            margin-top: 20px;
+            width: 100%;
+            height: 100%;
+         }
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+
+            animation-duration: 0.5s;
+            animation-name: animate-fade;
+            animation-delay: 0.5s;
+            animation-fill-mode: backwards;
+        }
+
+        button {
+            padding: 15px 15px 15px 15px;
+            margin: auto;
+            width: fit-content;
+            border-radius: 7px;
+            border: 1px solid #ffffff9f;
+            color:white;
+
+            background: linear-gradient(94.92deg, #477a9820 0.05%, #9b559e20 50.05%, #7d602320 100.05%);
+            box-shadow: -9px -8px 20px 10px rgba(118, 205, 255, 0.25), 9px 8px 20px 10px rgba(255, 197, 73, 0.25);
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+
+
+        @keyframes animate-fade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            #loading {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <img src="/src/iOSGlow.png">
+        <h1>Audience Vote</h1>
+        <h2>Demo Day</h2>
+        <p>Please allow location access to verify you're in the audience</p>
+        <button id="share-location">Share Location</button>
+    </div>
+    <div id="form-container"></div>
+
+    <script>
+        // Define regions with latitude and longitude bounds
+        const regions = [
+            {
+            name: "Atlanta",
+            bounds: {
+                latMin: 33.658550,
+                latMax: 33.838550,
+                lonMin: -84.491502,
+                lonMax: -84.291502
+            },
+            formUrl: "" + "?embedded=true"
+            }
+        ];
+
+        // Function to check if a point is within a region
+        function isWithinRegion(lat, lon, region) {
+            const { latMin, latMax, lonMin, lonMax } = region.bounds;
+            return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
+        }
+
+        document.getElementById("share-location").addEventListener("click", locate);
+
+        // Detect user's location
+        function locate (e) {
+            const loadingText = document.getElementById("loading");
+            loadingText.innerHTML = "<span class='spinner'></span><p>Tap Allow in the popup</p>"
+           if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const { latitude, longitude } = position.coords;
+
+                    // Find the region that matches the user's location
+                    const region = regions.find(r => isWithinRegion(latitude, longitude, r));
+
+                    // Update the UI
+                    const formContainer = document.getElementById("form-container");
+                    loadingText.style.display = "none";
+
+                    if (region) {
+                        formContainer.innerHTML = `
+                            <!--<p>We detected you're in <strong>${region.name}</strong>. Please fill out the form below:</p>-->
+                            <iframe src="${region.formUrl}"></iframe>
+                        `;
+                    } else {
+                        formContainer.innerHTML = `
+                            <p>Sorry, you don't seem to be at Demo Day. Please refresh the page from within the event venue.</p>
+                        `;
+                    }
+                }, (error) => {
+                    document.getElementById("loading").innerHTML = '<p>Unable to detect your location. Please allow us to access your location then reload the page to unlock voting.</p> <button id="reload">Reload</button>';
+                    console.error("Geolocation error:", error);
+                    document.getElementById("reload").addEventListener("click", (e) => {
+                        window.location.reload();
+                    });
+                });
+            } else {
+                document.getElementById("loading").textContent = "Geolocation is not supported by your browser.";
+            }
+        }
+         
+        
+    </script>
+</body>
+</html>

@@ -123,34 +123,34 @@
             {
             name: "Student Center",
             bounds: {
-                latMin:33.774510,
-                latMax:33.773514,
-                lonMin: -84.399071,
-                lonMax: -84.397932
+                latMin: 33.773635,
+                latMax: 33.774512,
+                lonMin: -84.399065,
+                lonMax: -84.397651
             },
             formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSd1offPJb-FQNDcsva6ZVXbSVaHFle5Siw3pkO3DRng8cugCQ/viewform?embedded=true"
             }
         ];
 
         // Function to check if a point is within a region
-        // function isWithinRegion(lat, lon, region) {
-        //     const { latMin, latMax, lonMin, lonMax } = region.bounds;
-        //     return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
-        // }
-
         function isWithinRegion(lat, lon, region) {
             const { latMin, latMax, lonMin, lonMax } = region.bounds;
-
-            // Add a small tolerance to account for potential rounding errors
-            const tolerance = 0.00001;
-
-            return (
-                lat >= latMin - tolerance &&
-                lat <= latMax + tolerance &&
-                lon >= lonMin - tolerance &&
-                lon <= lonMax + tolerance
-            );
+            return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
         }
+
+        // function isWithinRegion(lat, lon, region) {
+        //     const { latMin, latMax, lonMin, lonMax } = region.bounds;
+
+        //     // Add a small tolerance to account for potential rounding errors
+        //     const tolerance = 0.00001;
+
+        //     return (
+        //         lat >= latMin - tolerance &&
+        //         lat <= latMax + tolerance &&
+        //         lon >= lonMin - tolerance &&
+        //         lon <= lonMax + tolerance
+        //     );
+        // }
 
         document.getElementById("share-location").addEventListener("click", locate);
 
@@ -192,8 +192,6 @@
                 document.getElementById("loading").textContent = "Geolocation is not supported by your browser.";
             }
         }
-         
-        
     </script>
 </body>
 </html>

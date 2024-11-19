@@ -162,7 +162,9 @@
                         `;
                     } else {
                         formContainer.innerHTML = `
-                            <p>Sorry, you don't seem to be at Demo Day. Please refresh the page from within the event venue.</p>
+                            <p>Sorry, you don't seem to be at Demo Day. Please reload the page from within the event venue.</p>
+                            <p>Current Coordinates: ${latitude}, ${longitude}</p>
+                            <button id="reload">Reload</button>
                         `;
                     }
                 }, (error) => {

@@ -133,9 +133,23 @@
         ];
 
         // Function to check if a point is within a region
+        // function isWithinRegion(lat, lon, region) {
+        //     const { latMin, latMax, lonMin, lonMax } = region.bounds;
+        //     return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
+        // }
+
         function isWithinRegion(lat, lon, region) {
             const { latMin, latMax, lonMin, lonMax } = region.bounds;
-            return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
+
+            // Add a small tolerance to account for potential rounding errors
+            const tolerance = 0.00001;
+
+            return (
+                lat >= latMin - tolerance &&
+                lat <= latMax + tolerance &&
+                lon >= lonMin - tolerance &&
+                lon <= lonMax + tolerance
+            );
         }
 
         document.getElementById("share-location").addEventListener("click", locate);

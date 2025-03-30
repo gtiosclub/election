@@ -1,2 +1,2 @@
-# demo-day-voting
-Location-Based Polling Website for Audience Voting
+# Exec Voting
+Location-Based Polling Website for Executive Elections

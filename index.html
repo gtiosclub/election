@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Day Voting</title>
+    <title>Election Voting</title>
     <style>
         html, body {
             font-family: -apple-system, BlinkMacSystemFont, system-ui, Arial, sans-serif;
@@ -110,9 +110,9 @@
 <body>
     <div id="loading">
         <img src="src/iOSGlow.png">
-        <h1>Audience Vote</h1>
-        <h2>Demo Day</h2>
-        <p>Please allow location access to verify you're in the audience</p>
+        <h1>Executive Election</h1>
+        <!-- <h2>Demo Day</h2> -->
+        <p>Please allow location access to verify you're in the election meeting</p>
         <button id="share-location">Share Location</button>
     </div>
     <div id="form-container"></div>
@@ -129,6 +129,16 @@
                 lonMax: -84.397651
             },
             formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSd1offPJb-FQNDcsva6ZVXbSVaHFle5Siw3pkO3DRng8cugCQ/viewform?embedded=true"
+            },
+            {
+            name: "Clough Undergraduate Learning Commons (CULC)",
+            bounds: {
+                latMin: 33.7741556538,
+                latMax: 33.7749472291,
+                lonMin: -84.3966852228,
+                lonMax: -84.3960186634
+            },
+            formUrl: "https://forms.office.com/Pages/ResponsePage.aspx?id=u5ghSHuuJUuLem1_Mvqgg0pT-2f06n9BmxXB4vwotORUNFNGQVkwWkVPWTNOVlVMUUdUUUJTWjhBUC4u&embed=true"
             }
         ];
 
@@ -176,7 +186,7 @@
                         `;
                     } else {
                         formContainer.innerHTML = `
-                            <p>Sorry, you don't seem to be at Demo Day. Please reload the page from within the event venue.</p>
+                            <p>Sorry, you don't seem to be at the election meeting. Please reload the page from within the event venue.</p>
                             <p>Current Coordinates: ${latitude}, ${longitude}</p>
                             <button id="reload">Reload</button>
                         `;
